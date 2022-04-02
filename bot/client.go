@@ -55,10 +55,10 @@ func (c *Client) About() (string, error) {
 
 // --- 认证相关 ---
 
-// Auth 使用此方法验证你的身份，并返回一个会话
-func (c *Client) Auth() (string, error) {
-	data := map[string]string{"authKey": c.AuthKey}
-	res, err := c.doPost("/auth", data)
+// Verify 使用此方法验证你的身份，并返回一个会话
+func (c *Client) Verify() (string, error) {
+	data := map[string]string{"verifyKey": c.AuthKey}
+	res, err := c.doPost("/verify", data)
 	if err != nil {
 		return "", err
 	}
@@ -66,10 +66,10 @@ func (c *Client) Auth() (string, error) {
 	return tools.Json.Get([]byte(res), "session").ToString(), nil
 }
 
-// Verify 使用此方法校验并激活你的Session，同时将Session与一个已登录的Bot绑定
-func (c *Client) Verify(qq uint, sessionKey string) (*Bot, error) {
+// Bind 使用此方法校验并激活你的Session，同时将Session与一个已登录的Bot绑定
+func (c *Client) Bind(qq uint, sessionKey string) (*Bot, error) {
 	data := map[string]interface{}{"sessionKey": sessionKey, "qq": qq}
-	_, err := c.doPost("/verify", data)
+	_, err := c.doPost("/bind", data)
 	if err != nil {
 		return nil, err
 	}
